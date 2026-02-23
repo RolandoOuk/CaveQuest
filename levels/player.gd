@@ -12,7 +12,7 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 
-	# Handle jump.a
+	# Handle jump.
 	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
 
@@ -27,3 +27,14 @@ func _physics_process(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		animated_sprite.play("idle")
 	move_and_slide()
+
+
+func _on_deathzone_body_entered(body: Node2D) -> void:
+	if body.name == "Player":
+		get_tree().reload_current_scene()	
+
+
+func _on_finish_line_body_entered(body: Node2D) -> void:
+	if body.name == "Player":
+		print("YOU WIN!")
+		get_tree().quit()
